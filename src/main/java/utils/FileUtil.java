@@ -1,9 +1,13 @@
 package utils;
 
+import card.CardArray;
 import card.UserCard;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,32 +19,29 @@ public class FileUtil {
 
 
     /**
-     * Получение объекта UserCard из файла с базой по id
+     * Получение всех банковских карточек UserCard из файла с базой
      *
-     * @param baseFile     файл, в котором хранится база карточек.
-     * @param cardIdNeeded id карточки пользователя, которую необходимо найти
-     * @return экземпляр объекта UserCard. Пустая карточка, в случае отсутствия нужного id в базе
+     * @param baseFile файл, в котором хранится база карточек.
+     * @return экземпляр объекта CardArray. Пустая карточка, в случае отсутствия нужного id в базе
      * @throws IOException ошибка ввода/вывода при чтении из файла
      */
-    public static UserCard readCardFromBaseFile(File baseFile, long cardIdNeeded) throws IOException {
-        UserCard card = UserCard.EMPTY_CARD;
+    public static CardArray readCardFromBaseFile(File baseFile) throws IOException {
+        List<UserCard> cards = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(baseFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] cardInfo = line.trim().split(":");
                 int cardIdCurrent = Integer.parseInt(cardInfo[0]);
-                if (cardIdCurrent == cardIdNeeded) {
-                    String userName = cardInfo[1];
-                    long funds = Long.parseLong(cardInfo[2]);
-                    short pinCode = Short.parseShort(cardInfo[3]);
-                    card = new UserCard(cardIdCurrent, userName, funds, pinCode);
-                    break;
-                }
+                String userName = cardInfo[1];
+                long funds = Long.parseLong(cardInfo[2]);
+                short pinCode = Short.parseShort(cardInfo[3]);
+                cards.add(new UserCard(cardIdCurrent, userName, funds, pinCode));
             }
         } catch (IOException e) {
             throw new IOException(e.getMessage());
         }
-        return card;
+        UserCard[] userCardsArray = new UserCard[cards.size()];
+        return new CardArray(cards.toArray(userCardsArray));
     }
 
 

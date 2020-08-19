@@ -85,6 +85,10 @@ public class UserCard {
         this.funds = funds;
     }
 
+    public String toConfigString() {
+        return String.format("%s:%s:%s:%s", cardId, userName, funds, pinCode);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,6 +97,7 @@ public class UserCard {
         return cardId == card.cardId &&
                 userName.equals(card.userName);
     }
+
 
     @Override
     public int hashCode() {

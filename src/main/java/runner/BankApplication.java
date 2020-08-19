@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class BankApplication {
     private final File userCardBaseFile;
-    private ScannerWithValidation userInputScanner;
+    private final ScannerWithValidation userInputScanner = new ScannerWithValidation();
     private UserCardOperations operations;
     private CardArray userCards;
 
@@ -46,9 +46,9 @@ public class BankApplication {
         long id = userInputScanner.getLongFromScanner();
         System.out.println("Введите пин-код: ");
         short pinCode = userInputScanner.getShortFromScanner();
-        UserCard currentCard = FileUtil.readCardFromBaseFile(userCardBaseFile, id);
-        operations = new UserCardOperations(currentCard);
-        if (currentCard.equals(UserCard.EMPTY_CARD)) {
+        userCards = FileUtil.readCardFromBaseFile(userCardBaseFile);
+        operations = new UserCardOperations(userCards.getCardById(id));
+        if (userCards.getCardById(id).equals(UserCard.EMPTY_CARD)) {
             throw new CardNotFoundException("Не найден счет с id " + id);
         }
         return operations.authenticate(pinCode);
