@@ -38,14 +38,19 @@ public final class FileUtil {
                 short pinCode = Short.parseShort(cardInfo[3]);
                 cards.add(new UserCard(cardIdCurrent, userName, funds, pinCode));
             }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
         }
         UserCard[] userCardsArray = new UserCard[cards.size()];
         return new CardArray(cards.toArray(userCardsArray));
     }
 
 
+    /**
+     * Метод по записи всех банковских карточек в виде CardArray в файл
+     *
+     * @param baseFile файл, в котором хранится информация о банковских картах
+     * @param cards    Экземпляр CardArray
+     * @throws IOException ошибка ввода/вывода при записи в файл
+     */
     public synchronized static void writeCardArrayToFile(File baseFile, CardArray cards) throws IOException {
         try (FileWriter writer = new FileWriter(baseFile)) {
             writer.write(cards.cardArrayToConfigString());
@@ -69,8 +74,6 @@ public final class FileUtil {
                 idUserCards.add(cardId);
                 countOfCards++;
             }
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
         }
         return idUserCards.size() == countOfCards;
     }

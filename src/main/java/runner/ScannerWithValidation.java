@@ -14,7 +14,7 @@ public class ScannerWithValidation {
         }
     }
 
-    public int getIntFromScanner() {
+    public int getIntFromScanner() throws NumberFormatException {
         if (SCANNER.hasNextInt()) {
             return SCANNER.nextInt();
         } else {
