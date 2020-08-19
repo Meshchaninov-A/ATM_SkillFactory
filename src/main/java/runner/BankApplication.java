@@ -55,7 +55,7 @@ public class BankApplication {
     }
 
 
-    void menu() {
+    void menu() throws IOException {
         System.out.println("Добро пожаловать в меню банкомата.");
         int i;
         boolean exitFlag = false;
@@ -65,6 +65,7 @@ public class BankApplication {
             switch (i) {
                 case 1:
                     System.out.println("Нажат пункт 1, возвращаемся к меню");
+                    FileUtil.writeCardArrayToFile(userCardBaseFile,userCards);
                     break;
                 case 2:
                     System.out.println("Нажат пункт 2, возвращаемся в меню");

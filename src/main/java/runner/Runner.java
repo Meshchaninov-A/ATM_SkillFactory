@@ -1,10 +1,6 @@
 package runner;
 
-
-import card.UserCard;
-
 import java.io.File;
-import java.util.Scanner;
 
 public class Runner {
     public static void main(String[] args) {
@@ -12,6 +8,5 @@ public class Runner {
         File cardBaseFile = new File("user_base.csv");
         BankApplication application = new BankApplication(cardBaseFile);
         application.run();
-
     }
 }

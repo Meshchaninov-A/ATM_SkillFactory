@@ -4,7 +4,6 @@ import card.CardArray;
 import card.UserCard;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,8 +14,10 @@ import java.util.Set;
  *
  * @author Meshchaninov A.A.
  */
-public class FileUtil {
+public final class FileUtil {
 
+    private FileUtil() {
+    }
 
     /**
      * Получение всех банковских карточек UserCard из файла с базой
@@ -25,7 +26,7 @@ public class FileUtil {
      * @return экземпляр объекта CardArray. Пустая карточка, в случае отсутствия нужного id в базе
      * @throws IOException ошибка ввода/вывода при чтении из файла
      */
-    public static CardArray readCardFromBaseFile(File baseFile) throws IOException {
+    public synchronized static CardArray readCardFromBaseFile(File baseFile) throws IOException {
         List<UserCard> cards = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(baseFile))) {
             String line;
@@ -44,6 +45,12 @@ public class FileUtil {
         return new CardArray(cards.toArray(userCardsArray));
     }
 
+
+    public synchronized static void writeCardArrayToFile(File baseFile, CardArray cards) throws IOException {
+        try (FileWriter writer = new FileWriter(baseFile)) {
+            writer.write(cards.cardArrayToConfigString());
+        }
+    }
 
     /**
      * Метод по валидации базы карт на корректность id карточек.

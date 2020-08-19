@@ -15,6 +15,9 @@ public class CardArray {
     }
 
     public String cardArrayToConfigString() {
-        return cards.stream().map(UserCard::toConfigString).collect(Collectors.joining("\n"));
+        return cards.stream()
+                .sorted(Comparator.comparingLong(UserCard::getCardId))
+                .map(UserCard::toConfigString)
+                .collect(Collectors.joining("\n"));
     }
 }
