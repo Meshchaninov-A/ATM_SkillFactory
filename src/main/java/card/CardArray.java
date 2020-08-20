@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CardArray {
-    private HashSet<UserCard> cards;
+    private final HashSet<UserCard> cards;
 
     public CardArray(UserCard... cards) {
         this.cards = new HashSet<>(Arrays.asList(cards));

@@ -5,6 +5,11 @@ import java.util.Scanner;
 public class ScannerWithValidation {
     private static final Scanner SCANNER = new Scanner(System.in);
 
+    public long getLongFromScanner(String message) throws NumberFormatException {
+        System.out.println(message);
+        return getLongFromScanner();
+    }
+
     public long getLongFromScanner() throws NumberFormatException {
         if (SCANNER.hasNextLong()) {
             return SCANNER.nextLong();
@@ -23,7 +28,13 @@ public class ScannerWithValidation {
         }
     }
 
-    public short getShortFromScanner() throws NumberFormatException {
+    public int getIntFromScanner(String message) throws NumberFormatException {
+        System.out.println(message);
+        return getIntFromScanner();
+    }
+
+    public short getShortFromScanner(String message) throws NumberFormatException {
+        System.out.println(message);
         if (SCANNER.hasNextShort()) {
             return SCANNER.nextShort();
         } else {
@@ -32,7 +43,8 @@ public class ScannerWithValidation {
         }
     }
 
-    public String getStringFromScanner() {
+    public String getStringFromScanner(String message) {
+        System.out.println(message);
         return SCANNER.nextLine();
     }
 }

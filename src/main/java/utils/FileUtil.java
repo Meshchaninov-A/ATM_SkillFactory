@@ -2,6 +2,7 @@ package utils;
 
 import card.CardArray;
 import card.UserCard;
+import exceptions.CardBaseValidationException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -62,9 +63,9 @@ public final class FileUtil {
      *
      * @param baseFile файл, в котором хранится база карточек.
      * @return true- если все id карт разные, false- если имеются две карточки с одним id
-     * @throws IOException ошибка ввода/вывода при чтении из файла
+     * @throws CardBaseValidationException ошибка ввода/вывода при чтении из файла
      */
-    public static boolean validateFileUserCardBase(File baseFile) throws IOException {
+    public static boolean validateFileUserCardBase(File baseFile) throws CardBaseValidationException {
         Set<Integer> idUserCards = new HashSet<>();
         int countOfCards = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(baseFile))) {
@@ -74,6 +75,8 @@ public final class FileUtil {
                 idUserCards.add(cardId);
                 countOfCards++;
             }
+        } catch (IOException e) {
+            throw new CardBaseValidationException("Валидация базы карт неуспешна -" + e.getMessage());
         }
         return idUserCards.size() == countOfCards;
     }
