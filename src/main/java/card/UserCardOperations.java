@@ -13,10 +13,9 @@ public class UserCardOperations {
     }
 
 
-    public boolean addFunds(long amountOfMoneyToAdd) {
-        return false;
+    public void addFunds(long amountOfMoneyToAdd) {
+        userCard.setFunds(userCard.getFunds() + amountOfMoneyToAdd);
     }
-
 
     public boolean giveOutFunds(long amountOfMoneyToGiveOut) {
         if (userCard.getFunds() - amountOfMoneyToGiveOut < 0) {
@@ -26,7 +25,6 @@ public class UserCardOperations {
             return true;
         }
     }
-
 
     public boolean transferFunds(UserCard anotherCard, long funds) {
         return false;
