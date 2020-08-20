@@ -52,9 +52,11 @@ public final class FileUtil {
      * @param cards    Экземпляр CardArray
      * @throws IOException ошибка ввода/вывода при записи в файл
      */
-    public synchronized static void writeCardArrayToFile(File baseFile, CardArray cards) throws IOException {
+    public synchronized static void writeCardArrayToFile(File baseFile, CardArray cards) {
         try (FileWriter writer = new FileWriter(baseFile)) {
             writer.write(cards.cardArrayToConfigString());
+        } catch (IOException e) {
+            System.out.println("Не удалось записать данные в базу " + e.getMessage());
         }
     }
 
