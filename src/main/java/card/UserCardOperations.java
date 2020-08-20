@@ -1,7 +1,5 @@
 package card;
 
-//import sun.tools.jconsole.inspector.XOperations;
-
 import card.operations.ResultOperation;
 import utils.FileUtil;
 
@@ -14,7 +12,6 @@ public class UserCardOperations {
         this.userCards = userCards;
     }
 
-
     public ResultOperation addFunds(long cardId, long amountOfMoneyToAdd) {
         UserCard card = userCards.getCardById(cardId);
         if (card.equals(UserCard.EMPTY_CARD)) {
@@ -26,17 +23,18 @@ public class UserCardOperations {
         }
     }
 
-    public boolean giveOutFunds(long amountOfMoneyToGiveOut) {
-//        if (userCards.getFunds() - amountOfMoneyToGiveOut < 0) {
-//            System.out.println("У Вас не достаточно средств");
-//            return false;
-//        } else {
-//            userCards.setFunds(userCards.getFunds() - amountOfMoneyToGiveOut);
-//            return true;
-//        }
-        return true;
+    public ResultOperation withdrawFunds(long cardId, long amountOfMoneyToGiveOut) {
+        UserCard card = userCards.getCardById(cardId);
+        if (card.equals(UserCard.EMPTY_CARD)) {
+            return ResultOperation.CARD_NOT_FOUND;
+        } else if (card.getFunds() - amountOfMoneyToGiveOut < 0) {
+            return ResultOperation.INSUFFICIENT_FUNDS;
+        } else {
+            card.setFunds(card.getFunds() - amountOfMoneyToGiveOut);
+            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+            return ResultOperation.SUCCESS;
+        }
     }
-//    }
 
     public ResultOperation getBalance(long cardId) {
         UserCard card = userCards.getCardById(cardId);

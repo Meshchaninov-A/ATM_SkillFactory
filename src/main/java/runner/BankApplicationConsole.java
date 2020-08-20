@@ -4,10 +4,7 @@ import card.CardArray;
 import card.ClientSession;
 import card.UserCard;
 import card.UserCardOperations;
-import card.operations.AddFundsOperation;
-import card.operations.Operation;
-import card.operations.OperationsEnum;
-import exceptions.NotSuccessLoginException;
+import card.operations.*;
 import utils.FileUtil;
 
 import java.io.IOException;
@@ -33,13 +30,11 @@ public class BankApplicationConsole {
                 } else if (2 - i > 0) {
                     System.out.println("Логин не успешен, осталось попыток: " + (2 - i));
                 } else {
-                    throw new NotSuccessLoginException("Попытки входа в систему закончились");
+                    System.out.println("Попытки входа в систему закончились");
                 }
             }
         } catch (IOException e) {
             System.out.println("Проблема с доступом к файлу: " + e.getMessage());
-        } catch (SecurityException | NotSuccessLoginException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -75,9 +70,10 @@ public class BankApplicationConsole {
 
 
     void menu(ClientSession cs) throws IOException {
-        System.out.println("\n" + cs.getCardInfo().getUserName() + ", добро пожаловать в меню банкомата\n");
+        System.out.println("\n" + cs.getCardInfo().getUserName() + ", добро пожаловать в меню банкомата");
         OperationsEnum operationsEnum;
         Operation operation;
+        ResultOperation resultOperation = null;
         boolean exitFlag = false;
         do {
             showHelpMessage();
@@ -85,13 +81,15 @@ public class BankApplicationConsole {
             switch (operationsEnum) {
                 case ADD_FUNDS:
                     operation = new AddFundsOperation();
-                    operation.doOperation(userSession, operations, userInputScanner);
+                    resultOperation = operation.doOperation(userSession, operations, userInputScanner);
                     break;
-                case GET_FUNDS:
-                    withdrawFunds(cs);
+                case WITHDRAW_FUNDS:
+                    operation = new WithdrawFundsOperation();
+                    resultOperation = operation.doOperation(userSession, operations, userInputScanner);
                     break;
                 case GET_CARD_INFO:
-                    getCardBalance(cs);
+                    operation=new GetFundsInfoOperation();
+                    resultOperation=operation.doOperation(userSession,operations,userInputScanner);
                     break;
                 case TRANSFER_FUNDS:
                     transferFromCardToCard(cs);
@@ -119,7 +117,6 @@ public class BankApplicationConsole {
             if (operations.transferFunds(uc, sum))
                 FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
         }
-
         return true;
     }
 
@@ -130,15 +127,15 @@ public class BankApplicationConsole {
 //        FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
 //    }
 
-    private void withdrawFunds(ClientSession rq) throws IOException {
-        System.out.println("Введите количество снимаемых с карты средств");
-        Long sum = userInputScanner.getLongFromScanner();
-        if (operations.giveOutFunds(sum))
-            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
-    }
+//    private void withdrawFunds(ClientSession rq) throws IOException {
+//        System.out.println("Введите количество снимаемых с карты средств");
+//        Long sum = userInputScanner.getLongFromScanner();
+//        if (operations.giveOutFunds(sum))
+//            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+//    }
 
     private void showHelpMessage() {
-        System.out.println("Выберите нужный пункт меню: ");
+        System.out.println("\nВыберите нужный пункт меню: ");
         for (OperationsEnum value : OperationsEnum.values()) {
             if (value.getId() > 0) {
                 System.out.println(value.getId() + ". " + value.getDescription());

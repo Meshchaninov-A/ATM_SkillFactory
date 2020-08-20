@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public enum OperationsEnum {
     ADD_FUNDS(1, "Добавить средства на счет"),
-    GET_FUNDS(2, "Снять средства со счета"),
+    WITHDRAW_FUNDS(2, "Снять средства со счета"),
     GET_CARD_INFO(3, "Получить информацию о балансе"),
     TRANSFER_FUNDS(4, "Сделать перевод другому клиенту"),
     EXIT_PROGRAM(5, "Закончить сессию"),
