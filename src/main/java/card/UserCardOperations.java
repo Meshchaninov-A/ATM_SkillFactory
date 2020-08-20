@@ -46,12 +46,19 @@ public class UserCardOperations {
         }
     }
 
-    public boolean transferFunds(UserCard anotherCard, long funds) {
-//        if (giveOutFunds(funds)) {
-//            UserCardOperations operations = new UserCardOperations(anotherCard);
-//            operations.addFunds(funds);
-//            return true;
-//        } else return false;
-        return true;
+    public ResultOperation transferFunds(long cardId, long anotherCardId, long fundsToTransfer) {
+        UserCard card = userCards.getCardById(cardId);
+        UserCard anotherCard = userCards.getCardById(anotherCardId);
+        if (card.equals(UserCard.EMPTY_CARD) || anotherCard.equals(UserCard.EMPTY_CARD)) {
+            return ResultOperation.CARD_NOT_FOUND;
+        } else if (card.getFunds() - fundsToTransfer < 0) {
+            return ResultOperation.INSUFFICIENT_FUNDS;
+        } else {
+            card.setFunds(card.getFunds() - fundsToTransfer);
+            anotherCard.setFunds(card.getFunds() + fundsToTransfer);
+            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+            return ResultOperation.SUCCESS;
+
+        }
     }
 }

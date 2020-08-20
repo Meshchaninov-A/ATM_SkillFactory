@@ -13,9 +13,12 @@ public class TransferFundsOperation implements Operation {
 
     @Override
     public ResultOperation doOperation(ClientSession session, UserCardOperations operations, ScannerWithValidation scannerUserInput) {
-        long idOtherCard = scannerUserInput.getLongFromScanner("Введите id карты на которую вы хотите перевести средства:");
-        //operations.transferFunds()sequals(UserCard.EMPTY_CARD))
-        System.out.println("Введенной карты нет в ситеме");
-        return ResultOperation.SUCCESS;
+        if (session.isUserAuthorized()) {
+            long idOtherCard = scannerUserInput.getLongFromScanner("Введите id карты на которую вы хотите перевести средства:");
+            long fundsToTransfer = scannerUserInput.getLongFromScanner("Введите сумму для перевода:");
+            return operations.transferFunds(session.getCardInfo().getCardId(), idOtherCard, fundsToTransfer);
+        } else {
+            return ResultOperation.PERMISSION_DENIED;
+        }
     }
 }
