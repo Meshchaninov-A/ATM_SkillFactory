@@ -6,10 +6,10 @@ import utils.FileUtil;
 import static runner.Runner.userCardBaseFile;
 
 public class UserCardOperations {
-    private final CardArray userCards;
+    private static CardArray userCards = new CardArray();
 
     public UserCardOperations(CardArray userCards) {
-        this.userCards = userCards;
+        UserCardOperations.userCards = userCards;
     }
 
     public ResultOperation addFunds(long cardId, long amountOfMoneyToAdd) {

@@ -12,20 +12,21 @@ import java.io.IOException;
 import static runner.Runner.userCardBaseFile;
 
 
-public class BankApplicationConsole {
+public class BankApplicationConsole extends Thread {
     private final ScannerWithValidation userInputScanner = new ScannerWithValidation();
     private ClientSession userSession;
     private UserCardOperations operations;
     private CardArray userCards;
 
 
-    void run() {
+    public void run() {
         try {
             userCards = FileUtil.readCardFromBaseFile(userCardBaseFile);
             operations = new UserCardOperations(userCards);
             for (int i = 0; ; i++) {
                 if (authorization()) {
                     menu(userSession);
+                    userSession.closeSession();
                     break;
                 } else if (2 - i > 0) {
                     System.out.println("Логин не успешен, осталось попыток: " + (2 - i));
@@ -54,26 +55,30 @@ public class BankApplicationConsole {
         System.out.println("\n" + cs.getCardInfo().getUserName() + ", добро пожаловать в меню банкомата");
         OperationsEnum operationsEnum;
         Operation operation;
-        ResultOperation resultOperation = null;
+        ResultOperation resultOperation;
         do {
-            showHelpMessage();
-            operationsEnum = OperationsEnum.getEnumById(userInputScanner.getIntFromScanner());
-            if (operationsEnum.equals(OperationsEnum.ADD_FUNDS)) {
-                operation = new AddFundsOperation();
-            } else if (operationsEnum.equals(OperationsEnum.WITHDRAW_FUNDS)) {
-                operation = new WithdrawFundsOperation();
-            } else if (operationsEnum.equals(OperationsEnum.GET_CARD_INFO)) {
-                operation = new GetFundsInfoOperation();
-            } else if (operationsEnum.equals(OperationsEnum.TRANSFER_FUNDS)) {
-                operation = new TransferFundsOperation();
-            } else if (operationsEnum.equals(OperationsEnum.EXIT_PROGRAM)) {
-                break;
-            } else {
-                System.out.println(ResultOperation.NOT_SUPPORTED_COMMAND.getOperationResult());
-                continue;
+            try {
+                showHelpMessage();
+                operationsEnum = OperationsEnum.getEnumById(userInputScanner.getIntFromScanner());
+                if (operationsEnum.equals(OperationsEnum.ADD_FUNDS)) {
+                    operation = new AddFundsOperation();
+                } else if (operationsEnum.equals(OperationsEnum.WITHDRAW_FUNDS)) {
+                    operation = new WithdrawFundsOperation();
+                } else if (operationsEnum.equals(OperationsEnum.GET_CARD_INFO)) {
+                    operation = new GetFundsInfoOperation();
+                } else if (operationsEnum.equals(OperationsEnum.TRANSFER_FUNDS)) {
+                    operation = new TransferFundsOperation();
+                } else if (operationsEnum.equals(OperationsEnum.EXIT_PROGRAM)) {
+                    break;
+                } else {
+                    System.out.println(ResultOperation.NOT_SUPPORTED_COMMAND.getOperationResult());
+                    continue;
+                }
+                resultOperation = operation.doOperation(userSession, operations, userInputScanner);
+                System.out.println(resultOperation.getOperationResult());
+            } catch (NumberFormatException e) {
+                System.out.println(e.getMessage());
             }
-            resultOperation = operation.doOperation(userSession, operations, userInputScanner);
-            System.out.println(resultOperation.getOperationResult());
         } while (true);
         System.out.println("Выход из программы");
     }
