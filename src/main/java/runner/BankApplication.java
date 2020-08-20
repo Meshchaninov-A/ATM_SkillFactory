@@ -86,8 +86,7 @@ public class BankApplication {
                     getCardBalance(rq);
                     break;
                 case 2:
-                    System.out.println("Нажат пункт 2, возвращаемся в меню");
-                    FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+                    transferFromCardToCard(rq);
                     break;
                 case 3:
                     withdrawFunds(rq);
@@ -103,6 +102,22 @@ public class BankApplication {
         } while (!exitFlag);
     }
 
+    private boolean transferFromCardToCard(RequestContext rq) throws IOException {
+        System.out.println("Введите id карты на которую вы хотите перевести средства:");
+        Long id = userInputScanner.getLongFromScanner();
+        UserCard uc = userCards.getCardById(id);
+        if (uc.equals(UserCard.EMPTY_CARD))
+            System.out.println("Введенной карты нет в ситеме");
+        else {
+            System.out.println("Введите количество средств, которое вы хотите перевести:");
+            Long sum = userInputScanner.getLongFromScanner();
+            if (operations.transferFunds(uc, sum))
+                FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+        }
+
+        return true;
+    }
+
     private void depositFunds(RequestContext rq) throws IOException {
         System.out.println("Введите количество пополняемых на карту средств");
         Long sum = userInputScanner.getLongFromScanner();
@@ -113,12 +128,11 @@ public class BankApplication {
     private void withdrawFunds(RequestContext rq) throws IOException {
         System.out.println("Введите количество снимаемых с карты средств");
         Long sum = userInputScanner.getLongFromScanner();
-        if (!operations.giveOutFunds(sum)) System.out.println("Недостаточно средств");
-        FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+        if (operations.giveOutFunds(sum))
+            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
     }
 
     private void getCardBalance(RequestContext rq) {
         System.out.println("Баланс Вашей карты: " + rq.getCard().getFunds());
     }
-
 }
