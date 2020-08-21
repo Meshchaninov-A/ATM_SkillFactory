@@ -12,13 +12,11 @@ public class Runner {
         userCardBaseFile = new File("user_base.csv");
         if (FileUtil.validateFileUserCardBase(userCardBaseFile)) {
             BankApplicationConsole application = new BankApplicationConsole();
-            Thread console = new Thread(application);
-            console.start();
+            application.start();
             DraftApplication service = new DraftApplication();
-            Thread web = new Thread(service);
-            web.setDaemon(true);
-            web.start();
-            console.join();
+            service.setDaemon(true);
+            service.start();
+            service.join();
         }
         System.out.println("Программа остановлена");
     }
