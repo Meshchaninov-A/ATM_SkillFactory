@@ -61,4 +61,8 @@ public class UserCardOperations {
 
         }
     }
+
+    public CardArray getUserCards() {
+        return UserCardOperations.userCards;
+    }
 }

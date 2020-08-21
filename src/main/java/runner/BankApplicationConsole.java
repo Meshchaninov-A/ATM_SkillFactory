@@ -1,6 +1,5 @@
 package runner;
 
-import card.CardArray;
 import card.ClientSession;
 import card.UserCard;
 import card.UserCardOperations;
@@ -16,16 +15,14 @@ public class BankApplicationConsole extends Thread {
     private final ScannerWithValidation userInputScanner = new ScannerWithValidation();
     private ClientSession userSession;
     private UserCardOperations operations;
-    private CardArray userCards;
 
 
     public void run() {
         try {
-            userCards = FileUtil.readCardFromBaseFile(userCardBaseFile);
-            operations = new UserCardOperations(userCards);
+            operations = new UserCardOperations(FileUtil.readCardFromBaseFile(userCardBaseFile));
             for (int i = 0; ; i++) {
                 if (authorization()) {
-                    menu(userSession);
+                    menu();
                     userSession.closeSession();
                     break;
                 } else if (2 - i > 0) {
@@ -43,7 +40,7 @@ public class BankApplicationConsole extends Thread {
     private boolean authorization() {
         long id = userInputScanner.getLongFromScanner("Введите ваш id: ");
         short pinCode = userInputScanner.getShortFromScanner("Введите пин-код: ");
-        userSession = new ClientSession(userCards.getCardById(id));
+        userSession = new ClientSession(operations.getUserCards().getCardById(id));
         if (userSession.getCardInfo().equals(UserCard.EMPTY_CARD)) {
             return false;
         }
@@ -51,8 +48,8 @@ public class BankApplicationConsole extends Thread {
     }
 
 
-    void menu(ClientSession cs) {
-        System.out.println("\n" + cs.getCardInfo().getUserName() + ", добро пожаловать в меню банкомата");
+    void menu() {
+        System.out.println("\n" + userSession.getCardInfo().getUserName() + ", добро пожаловать в меню банкомата");
         OperationsEnum operationsEnum;
         Operation operation;
         ResultOperation resultOperation;
