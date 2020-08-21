@@ -15,7 +15,7 @@ public class ScannerWithValidation {
             return SCANNER.nextLong();
         } else {
             String actualValue = SCANNER.next();
-            throw new NumberFormatException(actualValue + "is not numeric value or it's not in [" + Long.MIN_VALUE + "," + Long.MAX_VALUE + "]");
+            throw new NumberFormatException(actualValue + " is not numeric value or it's not in [" + Long.MIN_VALUE + "," + Long.MAX_VALUE + "]");
         }
     }
 
@@ -24,13 +24,8 @@ public class ScannerWithValidation {
             return SCANNER.nextInt();
         } else {
             String actualValue = SCANNER.next();
-            throw new NumberFormatException(actualValue + "is not numeric value or it's not in [" + Integer.MIN_VALUE + "," + Integer.MAX_VALUE + "]");
+            throw new NumberFormatException(actualValue + " is not numeric value or it's not in [" + Integer.MIN_VALUE + "," + Integer.MAX_VALUE + "]");
         }
-    }
-
-    public int getIntFromScanner(String message) throws NumberFormatException {
-        System.out.println(message);
-        return getIntFromScanner();
     }
 
     public short getShortFromScanner(String message) throws NumberFormatException {
@@ -39,7 +34,7 @@ public class ScannerWithValidation {
             return SCANNER.nextShort();
         } else {
             String actualValue = SCANNER.next();
-            throw new NumberFormatException(actualValue + "is not numeric value or it's not in [" + Short.MIN_VALUE + "," + Short.MAX_VALUE + "]");
+            throw new NumberFormatException(actualValue + " is not numeric value or it's not in [" + Short.MIN_VALUE + "," + Short.MAX_VALUE + "]");
         }
     }
 

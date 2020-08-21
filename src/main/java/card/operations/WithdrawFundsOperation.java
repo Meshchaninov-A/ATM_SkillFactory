@@ -5,10 +5,6 @@ import card.UserCardOperations;
 import runner.ScannerWithValidation;
 
 public class WithdrawFundsOperation implements Operation {
-    @Override
-    public int getOperationId() {
-        return OperationsEnum.WITHDRAW_FUNDS.getId();
-    }
 
     @Override
     public ResultOperation doOperation(ClientSession session, UserCardOperations operations, ScannerWithValidation scannerUserInput) {

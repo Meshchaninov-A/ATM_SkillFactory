@@ -38,13 +38,18 @@ public class BankApplicationConsole extends Thread {
     }
 
     private boolean authorization() {
-        long id = userInputScanner.getLongFromScanner("Введите ваш id: ");
-        short pinCode = userInputScanner.getShortFromScanner("Введите пин-код: ");
-        userSession = new ClientSession(operations.getUserCards().getCardById(id));
-        if (userSession.getCardInfo().equals(UserCard.EMPTY_CARD)) {
+        try {
+            long id = userInputScanner.getLongFromScanner("Введите ваш id: ");
+            short pinCode = userInputScanner.getShortFromScanner("Введите пин-код: ");
+            userSession = new ClientSession(operations.getUserCards().getCardById(id));
+            if (userSession.getCardInfo().equals(UserCard.EMPTY_CARD)) {
+                return false;
+            }
+            return userSession.authenticate(pinCode);
+        } catch (NumberFormatException e) {
+            System.out.println(e.getMessage());
             return false;
         }
-        return userSession.authenticate(pinCode);
     }
 
 
