@@ -22,16 +22,18 @@ public class DraftApplication extends Thread {
         System.out.println("START");
         try {
             userCards = FileUtil.readCardFromBaseFile(userCardBaseFile);
-            do {
+            //do {
                 UserCard card = userCards.getCardById(1);
                 operations = new UserCardOperations(userCards);
                 userSession = new ClientSession(card);
                 userSession.authenticate((short) 1234);
-                operations.addFunds(card.getCardId(), 10L);
-                Thread.sleep(200L);
+                for (int i = 0; i < 10000; i++) {
+                    operations.addFunds(card.getCardId(), 10L);
+                }
+
 //                System.out.println("Транзакция успешна");
-            } while (true);
-        } catch (IOException | InterruptedException e) {
+          //  } while (true);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

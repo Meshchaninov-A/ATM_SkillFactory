@@ -13,11 +13,13 @@ public class Runner {
         if (FileUtil.validateFileUserCardBase(userCardBaseFile)) {
             BankApplicationConsole application = new BankApplicationConsole();
             application.start();
-            application.join();
+
             DraftApplication service = new DraftApplication();
             service.setDaemon(true);
             service.start();
 
+            application.join();
+            service.join();
         }
         System.out.println("Программа остановлена");
     }

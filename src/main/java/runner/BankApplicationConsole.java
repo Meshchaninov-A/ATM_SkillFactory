@@ -20,8 +20,13 @@ public class BankApplicationConsole extends Thread {
     public void run() {
         try {
             operations = new UserCardOperations(FileUtil.readCardFromBaseFile(userCardBaseFile));
-            for (int i = 0; ; i++) {
-                if (authorization()) {
+    /*        for (int i = 0; ; i++) {
+                if (authorization()) {*/
+
+                    for (int i = 0; i < 10000; i++) {
+                        operations.addFunds(1, 10L);
+                    }
+                    /*
                     menu();
                     userSession.closeSession();
                     break;
@@ -30,8 +35,8 @@ public class BankApplicationConsole extends Thread {
                 } else {
                     System.out.println("Попытки входа в систему закончились");
                     break;
-                }
-            }
+                }*/
+            //}
         } catch (IOException e) {
             System.out.println("Проблема с доступом к файлу: " + e.getMessage());
         }
@@ -39,8 +44,8 @@ public class BankApplicationConsole extends Thread {
 
     private boolean authorization() {
         try {
-            long id = userInputScanner.getLongFromScanner("Введите ваш id: ");
-            short pinCode = userInputScanner.getShortFromScanner("Введите пин-код: ");
+            long id = 1;//serInputScanner.getLongFromScanner("Введите ваш id: ");
+            short pinCode = 1234;//userInputScanner.getShortFromScanner("Введите пин-код: ");
             userSession = new ClientSession(operations.getUserCards().getCardById(id));
             if (userSession.getCardInfo().equals(UserCard.EMPTY_CARD)) {
                 return false;
