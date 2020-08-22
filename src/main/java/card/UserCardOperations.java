@@ -1,29 +1,29 @@
 package card;
 
 import card.operations.ResultOperation;
-import utils.FileUtil;
-
-import static runner.Runner.userCardBaseFile;
+import files.ProjectFileWorker;
 
 public class UserCardOperations {
     private static CardArray userCards = new CardArray();
+    private static ProjectFileWorker baseWorker;
 
-    public UserCardOperations(CardArray userCards) {
-        UserCardOperations.userCards = userCards;
+    public UserCardOperations(ProjectFileWorker baseWorker) {
+        UserCardOperations.baseWorker = baseWorker;
+        UserCardOperations.userCards = baseWorker.readCards();
     }
 
-    public ResultOperation addFunds(long cardId, long amountOfMoneyToAdd) {
+    public synchronized ResultOperation addFunds(long cardId, long amountOfMoneyToAdd) {
         UserCard card = userCards.getCardById(cardId);
         if (card.equals(UserCard.EMPTY_CARD)) {
             return ResultOperation.CARD_NOT_FOUND;
         } else {
             card.setFunds(card.getFunds() + amountOfMoneyToAdd);
-            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+            baseWorker.writeCards(userCards);
             return ResultOperation.SUCCESS;
         }
     }
 
-    public ResultOperation withdrawFunds(long cardId, long amountOfMoneyToGiveOut) {
+    public synchronized ResultOperation withdrawFunds(long cardId, long amountOfMoneyToGiveOut) {
         UserCard card = userCards.getCardById(cardId);
         if (card.equals(UserCard.EMPTY_CARD)) {
             return ResultOperation.CARD_NOT_FOUND;
@@ -31,12 +31,12 @@ public class UserCardOperations {
             return ResultOperation.INSUFFICIENT_FUNDS;
         } else {
             card.setFunds(card.getFunds() - amountOfMoneyToGiveOut);
-            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+            baseWorker.writeCards(userCards);
             return ResultOperation.SUCCESS;
         }
     }
 
-    public ResultOperation getBalance(long cardId) {
+    public synchronized ResultOperation getBalance(long cardId) {
         UserCard card = userCards.getCardById(cardId);
         if (card.equals(UserCard.EMPTY_CARD)) {
             return ResultOperation.CARD_NOT_FOUND;
@@ -46,19 +46,20 @@ public class UserCardOperations {
         }
     }
 
-    public ResultOperation transferFunds(long cardId, long anotherCardId, long fundsToTransfer) {
+    public synchronized ResultOperation transferFunds(long cardId, long anotherCardId, long fundsToTransfer) {
         UserCard card = userCards.getCardById(cardId);
         UserCard anotherCard = userCards.getCardById(anotherCardId);
         if (card.equals(UserCard.EMPTY_CARD) || anotherCard.equals(UserCard.EMPTY_CARD)) {
             return ResultOperation.CARD_NOT_FOUND;
+        } else if (card.equals(anotherCard)) {
+            return ResultOperation.NOT_SUPPORTED_OPERATION;
         } else if (card.getFunds() - fundsToTransfer < 0) {
             return ResultOperation.INSUFFICIENT_FUNDS;
         } else {
             card.setFunds(card.getFunds() - fundsToTransfer);
             anotherCard.setFunds(card.getFunds() + fundsToTransfer);
-            FileUtil.writeCardArrayToFile(userCardBaseFile, userCards);
+            baseWorker.writeCards(userCards);
             return ResultOperation.SUCCESS;
-
         }
     }
 

@@ -4,36 +4,29 @@ import card.ClientSession;
 import card.UserCard;
 import card.UserCardOperations;
 import card.operations.*;
-import utils.FileUtil;
-
-import java.io.IOException;
-
-import static runner.Runner.userCardBaseFile;
 
 
 public class BankApplicationConsole extends Thread {
     private final ScannerWithValidation userInputScanner = new ScannerWithValidation();
     private ClientSession userSession;
-    private UserCardOperations operations;
+    private final UserCardOperations operations;
 
+    public BankApplicationConsole(UserCardOperations cardOperations) {
+        this.operations = cardOperations;
+    }
 
     public void run() {
-        try {
-            operations = new UserCardOperations(FileUtil.readCardFromBaseFile(userCardBaseFile));
-            for (int i = 0; ; i++) {
-                if (authorization()) {
-                    menu();
-                    userSession.closeSession();
-                    break;
-                } else if (2 - i > 0) {
-                    System.out.println("Логин не успешен, осталось попыток: " + (2 - i));
-                } else {
-                    System.out.println("Попытки входа в систему закончились");
-                    break;
-                }
+        for (int i = 0; ; i++) {
+            if (authorization()) {
+                menu();
+                userSession.closeSession();
+                break;
+            } else if (2 - i > 0) {
+                System.out.println("Логин не успешен, осталось попыток: " + (2 - i));
+            } else {
+                System.out.println("Попытки входа в систему закончились");
+                break;
             }
-        } catch (IOException e) {
-            System.out.println("Проблема с доступом к файлу: " + e.getMessage());
         }
     }
 
@@ -73,7 +66,7 @@ public class BankApplicationConsole extends Thread {
                 } else if (operationsEnum.equals(OperationsEnum.EXIT_PROGRAM)) {
                     break;
                 } else {
-                    System.out.println(ResultOperation.NOT_SUPPORTED_COMMAND.getOperationResult());
+                    System.out.println(ResultOperation.NOT_SUPPORTED_OPERATION.getOperationResult());
                     continue;
                 }
                 resultOperation = operation.doOperation(userSession, operations, userInputScanner);
