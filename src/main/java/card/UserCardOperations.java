@@ -57,7 +57,7 @@ public class UserCardOperations {
             return ResultOperation.INSUFFICIENT_FUNDS;
         } else {
             card.setFunds(card.getFunds() - fundsToTransfer);
-            anotherCard.setFunds(card.getFunds() + fundsToTransfer);
+            anotherCard.setFunds(anotherCard.getFunds() + fundsToTransfer);
             baseWorker.writeCards(userCards);
             return ResultOperation.SUCCESS;
         }

@@ -16,18 +16,28 @@ public class BankApplicationConsole extends Thread {
     }
 
     public void run() {
-        for (int i = 0; ; i++) {
+/*        for (int i = 0; ; i++) {
             if (authorization()) {
-                menu();
+                //menu();*/
+
+                for (int i = 0; i < 100000; i++) {
+                    //operations.addFunds(card.getCardId(), 10L);
+                    //operations.withdrawFunds(card.getCardId(), 5L);
+                    operations.transferFunds(2, 1, 10);
+                    operations.transferFunds(0, 1, 10);
+                    //operations.withdrawFunds(1,1);
+                    operations.addFunds(1,1);
+                }
+/*
                 userSession.closeSession();
                 break;
             } else if (2 - i > 0) {
                 System.out.println("Логин не успешен, осталось попыток: " + (2 - i));
             } else {
                 System.out.println("Попытки входа в систему закончились");
-                break;
-            }
-        }
+                break;*/
+/*            }
+        }*/
     }
 
     private boolean authorization() {
