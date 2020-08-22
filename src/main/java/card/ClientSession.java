@@ -1,5 +1,8 @@
 package card;
 
+/**
+ * Сессия пользователя по работе с банкоматом
+ */
 public class ClientSession {
     private UserCard userCard;
     boolean isUserAuthorized = false;
@@ -8,11 +11,22 @@ public class ClientSession {
         this.userCard = userCard;
     }
 
+    /**
+     * Аутентефикация пользователя
+     *
+     * @param pinCode пинкод, введенный пользователем
+     * @return true при успехе
+     */
     public boolean authenticate(short pinCode) {
         isUserAuthorized = (userCard.getPinCode() == pinCode);
         return isUserAuthorized;
     }
 
+    /**
+     * Получить информацию о банковской карте
+     *
+     * @return
+     */
     public UserCard getCardInfo() {
         return userCard;
     }
