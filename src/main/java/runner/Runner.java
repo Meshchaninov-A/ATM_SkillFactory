@@ -1,18 +1,24 @@
 package runner;
 
-import utils.FileUtil;
+import card.UserCardOperations;
+import files.ProjectFileWorker;
 
 import java.io.File;
 
 public class Runner {
-    public static File userCardBaseFile;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        ProjectFileWorker fileWorker = new ProjectFileWorker(new File("user_base.csv"));
         //File cardBaseFile = new File(args[0]);
-        userCardBaseFile = new File("user_base.csv");
-        if (FileUtil.validateFileUserCardBase(userCardBaseFile)) {
-            BankApplicationConsole application = new BankApplicationConsole();
-            application.run();
+        if (fileWorker.validateCardBase()) {
+            UserCardOperations operations = new UserCardOperations(fileWorker);
+            BankApplicationConsole application = new BankApplicationConsole(operations);
+            DraftApplication service = new DraftApplication(operations);
+            service.setDaemon(true);
+            application.start();
+            service.start();
+            application.join();
+            service.join();
         }
         System.out.println("Программа остановлена");
     }

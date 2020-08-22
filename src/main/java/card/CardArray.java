@@ -4,10 +4,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CardArray {
-    private final HashSet<UserCard> cards;
+    private final Set<UserCard> cards;
+
 
     public CardArray(UserCard... cards) {
-        this.cards = new HashSet<>(Arrays.asList(cards));
+        this.cards = Collections.synchronizedSet(new HashSet<>(Arrays.asList(cards)));
     }
 
     public UserCard getCardById(long cardId) {
