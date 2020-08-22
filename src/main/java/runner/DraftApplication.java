@@ -19,7 +19,9 @@ public class DraftApplication extends Thread {
         userSession = new ClientSession(card);
         userSession.authenticate((short) 1234);
         for (int i = 0; i < 1000; i++) {
-            operations.addFunds(card.getCardId(), 10L);
+            //operations.addFunds(card.getCardId(), 10L);
+            //operations.withdrawFunds(card.getCardId(), 5L);
+            operations.transferFunds(2, 1, 10);
         }
         System.out.println("Транзакция успешна");
     }
