@@ -5,7 +5,20 @@ import card.UserCard;
 import card.UserCardOperations;
 import runner.ScannerWithValidation;
 
+/**
+ * Класс, реализующий операцию перечисления средств
+ */
+
 public class TransferFundsOperation implements Operation {
+
+    /**
+     * Операция перечисления средств
+     *
+     * @param session          сессионные данные клиента
+     * @param operations       объект для выполнения клиентских операций
+     * @param scannerUserInput объект для считывания пользовательских данных
+     * @return результат операции в виде ResultOperation
+     */
 
     @Override
     public ResultOperation doOperation(ClientSession session, UserCardOperations operations, ScannerWithValidation scannerUserInput) {

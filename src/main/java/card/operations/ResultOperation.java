@@ -1,5 +1,9 @@
 package card.operations;
 
+/**
+ * enum, описывающий результат клиентской операции
+ */
+
 public enum ResultOperation {
     SUCCESS("Операция успешна"),
     PERMISSION_DENIED("Доступ запрещен"),
@@ -12,6 +16,12 @@ public enum ResultOperation {
     ResultOperation(String s) {
         this.operationResult = s;
     }
+
+    /**
+     * Получить строковое представление результата операции
+     *
+     * @return строковое представление результата операции
+     */
 
     public String getOperationResult() {
         return operationResult;

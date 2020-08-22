@@ -1,5 +1,8 @@
 package runner;
 
+/**
+ * Класс, реализующий работу банкомата на основе web-сервисов
+ */
 
 public class BankApplicationWebService extends Thread {
 

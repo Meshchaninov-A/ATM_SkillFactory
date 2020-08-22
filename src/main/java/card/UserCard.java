@@ -85,6 +85,12 @@ public class UserCard {
         this.funds = funds;
     }
 
+    /**
+     * Получить строковое предстваление объекта UserCard
+     *
+     * @return строковое предстваление объекта UserCard
+     */
+
     public String toConfigString() {
         return String.format("%s:%s:%s:%s", cardId, userName, funds, pinCode);
     }
