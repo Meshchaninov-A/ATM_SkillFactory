@@ -31,6 +31,10 @@ public class ClientSession {
         return userCard;
     }
 
+    /**
+     * Закрыть сессию
+     */
+
     public void closeSession() {
         this.userCard = UserCard.EMPTY_CARD;
         isUserAuthorized = false;

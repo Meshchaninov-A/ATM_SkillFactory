@@ -5,6 +5,10 @@ import files.ProjectFileWorker;
 
 import java.io.File;
 
+/**
+ * Класс, отвечающий за запуск работы приложения
+ */
+
 public class Runner {
 
     public static void main(String[] args) throws InterruptedException {

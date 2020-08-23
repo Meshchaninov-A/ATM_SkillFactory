@@ -5,6 +5,9 @@ import card.UserCard;
 import card.UserCardOperations;
 import card.operations.*;
 
+/**
+ * Класс, реализующий работу консольного банкомата
+ */
 
 public class BankApplicationConsole extends Thread {
     private final ScannerWithValidation userInputScanner = new ScannerWithValidation();
@@ -14,6 +17,11 @@ public class BankApplicationConsole extends Thread {
     public BankApplicationConsole(UserCardOperations cardOperations) {
         this.operations = cardOperations;
     }
+
+    /**
+     * Запустить заботу банкомата
+     */
+
 
     public void run() {
         for (int i = 0; ; i++) {
@@ -30,6 +38,12 @@ public class BankApplicationConsole extends Thread {
         }
     }
 
+    /**
+     * Авторизовать пользователя
+     *
+     * @return признак успешности авторизации
+     */
+
     private boolean authorization() {
         try {
             long id = userInputScanner.getLongFromScanner("Введите ваш id: ");
@@ -45,6 +59,9 @@ public class BankApplicationConsole extends Thread {
         }
     }
 
+    /**
+     * Логика работы меню консольного банкомата
+     */
 
     void menu() {
         System.out.println("\n" + userSession.getCardInfo().getUserName() + ", добро пожаловать в меню банкомата");
@@ -78,6 +95,9 @@ public class BankApplicationConsole extends Thread {
         System.out.println("Выход из программы");
     }
 
+    /**
+     * Отобразить меню консольного банкомата
+     */
 
     private void showHelpMessage() {
         System.out.println("\nВыберите нужный пункт меню: ");
@@ -87,5 +107,4 @@ public class BankApplicationConsole extends Thread {
             }
         }
     }
-
 }
