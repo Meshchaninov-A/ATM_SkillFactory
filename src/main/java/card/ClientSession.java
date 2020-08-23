@@ -25,7 +25,7 @@ public class ClientSession {
     /**
      * Получить информацию о банковской карте
      *
-     * @return
+     * @return экземпляр объекта UserCard, привязанный к сессии клиента
      */
     public UserCard getCardInfo() {
         return userCard;
@@ -34,7 +34,6 @@ public class ClientSession {
     /**
      * Закрыть сессию
      */
-
     public void closeSession() {
         this.userCard = UserCard.EMPTY_CARD;
         isUserAuthorized = false;

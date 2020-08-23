@@ -68,15 +68,4 @@ public class ScannerWithValidation {
         }
     }
 
-    /**
-     * Считать пользовательские данные с типом String с консоли
-     *
-     * @param message сообщение для отображения клиенту
-     * @return значение введенное пользователем
-     */
-
-    public String getStringFromScanner(String message) {
-        System.out.println(message);
-        return SCANNER.nextLine();
-    }
 }
