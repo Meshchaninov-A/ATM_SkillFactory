@@ -1,7 +1,6 @@
 package card.operations;
 
 import card.ClientSession;
-import card.UserCard;
 import card.UserCardOperations;
 import runner.ScannerWithValidation;
 
